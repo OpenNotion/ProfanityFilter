@@ -1,0 +1,29 @@
+{
+	"name" : "opennotion/profanity-filter",
+	"description" : "The OpenNotion profanity filter library used to replace profanities within ideas, comments and otehr pieces of user editable text.",
+	"license" : "BSD-2",
+	"authors" : [
+		{
+			"name" : "OpenNotion Group",
+			"email" : "contact@opennotion.net"
+		}
+	],
+	"require" : {
+		"php" : ">=5.3.0",
+		"illuminate/support" : "4.1.*",
+		"illuminate/config" : "4.1.*",
+		"illuminate/cache" : "4.1.*"
+	},
+	"require-dev" : {
+		"phpunit/phpunit" : "4.0.*"
+	},
+	"autoload" : {
+		"classmap" : [
+			"src/migrations"
+		],
+		"psr-0" : {
+			"OpenNotion\\ProfanityFilter\\" : "src/"
+		}
+	},
+	"minimum-stability" : "stable"
+}
