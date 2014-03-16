@@ -1,6 +1,6 @@
 #ProfanityFilter
 
-The OpenNotion profanity filter library used to replace profanities within ideas, comments and otehr pieces of user editable text.
+The OpenNotion profanity filter library used to replace profanities within ideas, comments and other pieces of user editable text.
 
 ##What?
 
