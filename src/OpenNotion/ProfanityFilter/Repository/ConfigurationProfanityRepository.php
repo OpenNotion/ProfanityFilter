@@ -33,4 +33,35 @@ class ConfigurationProfanityRepository implements ProfanityRepositoryInterface
 	{
 		return $this->config->get('profanity-filter::profanities');
 	}
+
+	/**
+	 * Create a new profanity.
+	 *
+	 * @param string $profanity   The profanity keyword to search for.
+	 * @param string $replacement The replacement to use for the profanity.
+	 *
+	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
+	 *
+	 * @throws \BadMethodCallException
+	 */
+	public function create($profanity = '', $replacement = '')
+	{
+		throw new \BadMethodCallException('The Configuration repository provider does not support the creating or updating of profanities.');
+	}
+
+	/**
+	 * Update an existing profanity.
+	 *
+	 * @param int    $id          The ID of the profanity to update.
+	 * @param string $profanity   The profanity keyword to search for.
+	 * @param string $replacement The replacement to use for the profanity.
+	 *
+	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
+	 *
+	 * @throws \BadMethodCallException
+	 */
+	public function update($id = 0, $profanity = '', $replacement = '')
+	{
+		throw new \BadMethodCallException('The Configuration repository provider does not support the creating or updating of profanities.');
+	}
 }

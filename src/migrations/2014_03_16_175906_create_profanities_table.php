@@ -17,7 +17,7 @@ class CreateProfanityReplacementsTable extends Migration
 			function (Blueprint $table) {
 				$table->increments('id');
 				$table->string('profanity')->unique();
-				$table->string('replacement')->unique();
+				$table->string('replacement');
 			}
 		);
 	}

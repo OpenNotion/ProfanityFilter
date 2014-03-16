@@ -52,4 +52,44 @@ class CacheProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
 
 		return $profanities;
 	}
+
+	/**
+	 * Create a new profanity.
+	 *
+	 * @param string $profanity   The profanity keyword to search for.
+	 * @param string $replacement The replacement to use for the profanity.
+	 *
+	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
+	 *
+	 * @throws \BadMethodCallException Thrown if the repository type does not support this method.
+	 */
+	public function create($profanity = '', $replacement = '')
+	{
+
+		$this->profanityRepository->create($profanity, $replacement);
+
+		$profanities = $this->profanityRepository->getProfanities();
+
+		$this->cache->put($this->cacheKey, $profanities);
+	}
+
+	/**
+	 * Update an existing profanity.
+	 *
+	 * @param int    $id          The ID of the profanity to update.
+	 * @param string $profanity   The profanity keyword to search for.
+	 * @param string $replacement The replacement to sue for the profanity.
+	 *
+	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
+	 *
+	 * @throws \BadMethodCallException Thrown if the repository type does not support this method.
+	 */
+	public function update($id = 0, $profanity = '', $replacement = '')
+	{
+		$this->profanityRepository->update($id, $profanity, $replacement);
+
+		$profanities = $this->profanityRepository->getProfanities();
+
+		$this->cache->put($this->cacheKey, $profanities);
+	}
 }
