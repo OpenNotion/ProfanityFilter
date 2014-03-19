@@ -17,4 +17,4 @@ This library is part of the [OpenNotion](http://opennotion.net/) project.  OpenN
 Right now this library does the bare minimum to replace search strings. However, the below features are planned:
 
 - Profanity replacement priorities - modify the priorities for replacing profanities so that profanities are replaced in a defined order.
-- Intelligent replacing - currently this library will replace all occurrences of words it finds and only words it finds. This causes problems when filtering words such as "ass" that would result in replacements such as "***istant". Only exact matches are currently filtered too.
+- Intelligent replacing - currently this library will replace all occurrences of words it finds and only words it finds. This causes problems when filtering words such as "ass" that would result in replacements such as "***istant".

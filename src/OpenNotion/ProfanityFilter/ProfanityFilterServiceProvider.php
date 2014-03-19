@@ -6,7 +6,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use OpenNotion\ProfanityFilter\Repository\ConfigurationProfanityRepository;
 use OpenNotion\ProfanityFilter\Repository\Decorator\CacheProfanityRepositoryDecorator;
-use OpenNotion\ProfanityFilter\Repository\EloquentProfanityRepository;
+use OpenNotion\ProfanityFilter\Repository\Decorator\LeetSpeakProfanityRepositoryDecorator;
+use OpenNotion\ProfanityFilter\Repository\Decorator\NoRegexProfanityRepositoryDecorator;
+use OpenNotion\ProfanityFilter\Repository\EloquentAbstractProfanityRepository;
 
 /**
  * ProfanityFilter service provider. handles registering of IOC bindings for the profanity filter.
@@ -49,24 +51,33 @@ class ProfanityFilterServiceProvider extends ServiceProvider
 			function (Application $app) {
 				$repository = null;
 
-				switch ($app->make('config')->get('profanity-filter::general.source')) {
+				/** @var \Illuminate\Config\Repository $config */
+				$config = $app->make('config');
+
+				switch ($config->get('profanity-filter::general.source')) {
 					case 'database':
-						$repository = new EloquentProfanityRepository();
-
-
-						if ($app->make('config')->get('profanity-filter::general.cache.enabled') === true) {
-							$cacheKey = (string) $app->make('config')->get('profanity-filter::general.cache.key');
-
-							$repository = new CacheProfanityRepositoryDecorator($repository, $this->app->make(
-								'\OpenNotion\ProfanityFilter\Service\CacheServiceInterface'
-							), $cacheKey);
-						}
-
+						$repository = new EloquentAbstractProfanityRepository();
 						break;
 					case 'config':
 					default:
-						$repository = new ConfigurationProfanityRepository($app->make('config'));
+						$repository = new ConfigurationProfanityRepository($config);
 						break;
+				}
+
+				if ($config->get('profanity-filter::general.use_leet_speak_replacement')) {
+					$leetSpeakReplacements = (array) $config->get('profanity-filter::leet_speak');
+
+					$repository = new LeetSpeakProfanityRepositoryDecorator($repository, $leetSpeakReplacements);
+				} else {
+					$repository = new NoRegexProfanityRepositoryDecorator($repository);
+				}
+
+				if ($config->get('profanity-filter::general.cache.enabled') === true) {
+					$cacheKey = (string) $config->get('profanity-filter::general.cache.key');
+
+					$repository = new CacheProfanityRepositoryDecorator($repository, $this->app->make(
+						'\OpenNotion\ProfanityFilter\Service\CacheServiceInterface'
+					), $cacheKey);
 				}
 
 				return $repository;

@@ -2,6 +2,7 @@
 
 namespace OpenNotion\ProfanityFilter;
 
+use OpenNotion\ProfanityFilter\Repository\AbstractProfanityRepository;
 use OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface;
 
 /**
@@ -51,27 +52,7 @@ class Filter
 	 */
 	protected function loadProfanities()
 	{
-		$this->profanities = $this->formatProfanities($this->profanityRepository->getProfanities());
-	}
-
-	/**
-	 * Format an array of profanities and their replacements ready for use by Regex.
-	 *
-	 * @param array $profanities The profanities to format.
-	 *
-	 * @return array The formatted profanities.
-	 */
-	protected function formatProfanities(array $profanities)
-	{
-		$formattedProfanities = array();
-
-		foreach ($profanities as $profanity => $replacement) {
-			$profanity = '#' . preg_quote($profanity, '#') . '#i';
-
-			$formattedProfanities[$profanity] = $replacement;
-		}
-
-		return $formattedProfanities;
+		$this->profanities = $this->profanityRepository->getProfanities();
 	}
 
 	/**

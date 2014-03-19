@@ -9,7 +9,7 @@ namespace OpenNotion\ProfanityFilter;
  */
 class FilterTest extends \TestCase
 {
-	public function testSimpleReplace()
+	public function testSimpleReplaceUsingConfig()
 	{
 		/** @var \OpenNotion\ProfanityFilter\Filter $filter */
 		$filter = $this->app->make('profanities');
@@ -17,6 +17,18 @@ class FilterTest extends \TestCase
 		$expected = '**** this!';
 
 		$actual = $filter->replaceProfanities('fuck this!');
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	public function testReplaceWithLeetUsingConfig()
+	{
+		/** @var \OpenNotion\ProfanityFilter\Filter $filter */
+		$filter = $this->app->make('profanities');
+
+		$expected = '**** this!';
+
+		$actual = $filter->replaceProfanities('ƒu.¢k this!');
 
 		$this->assertEquals($expected, $actual);
 	}
