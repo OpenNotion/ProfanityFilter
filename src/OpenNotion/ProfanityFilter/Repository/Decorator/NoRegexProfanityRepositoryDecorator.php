@@ -2,6 +2,8 @@
 
 namespace OpenNotion\ProfanityFilter\Repository\Decorator;
 
+use OpenNotion\ProfanityFilter\Repository\Profanity;
+
 /**
  * ProfanityRepository Decorator that runs preg_quote on all profanities and prefixes them with preg_replace() delimiters.
  *
@@ -58,5 +60,17 @@ class NoRegexProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
 	public function update($id = 0, $profanity = '', $replacement = '')
 	{
 		return $this->profanityRepository->update($id, $profanity, $replacement);
+	}
+
+	/**
+	 * Retrieve a single profanity by it's ID.
+	 *
+	 * @param int $id The ID of the profanity to fetch.
+	 *
+	 * @return Profanity
+	 */
+	public function getProfanity($id = 0)
+	{
+		return $this->profanityRepository->getProfanity($id);
 	}
 }

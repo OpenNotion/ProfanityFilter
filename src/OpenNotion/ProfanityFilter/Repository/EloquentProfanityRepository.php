@@ -2,8 +2,8 @@
 
 namespace OpenNotion\ProfanityFilter\Repository;
 
-use OpenNotion\ProfanityFilter\Model\Profanity;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use OpenNotion\ProfanityFilter\Model\Profanity;
 
 /**
  * An Eloquent implementation of the ProfanityRepositoryInterface.

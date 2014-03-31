@@ -8,7 +8,7 @@ use OpenNotion\ProfanityFilter\Repository\ConfigurationProfanityRepository;
 use OpenNotion\ProfanityFilter\Repository\Decorator\CacheProfanityRepositoryDecorator;
 use OpenNotion\ProfanityFilter\Repository\Decorator\LeetSpeakProfanityRepositoryDecorator;
 use OpenNotion\ProfanityFilter\Repository\Decorator\NoRegexProfanityRepositoryDecorator;
-use OpenNotion\ProfanityFilter\Repository\EloquentAbstractProfanityRepository;
+use OpenNotion\ProfanityFilter\Repository\EloquentProfanityRepository;
 
 /**
  * ProfanityFilter service provider. handles registering of IOC bindings for the profanity filter.
@@ -56,7 +56,7 @@ class ProfanityFilterServiceProvider extends ServiceProvider
 
 				switch ($config->get('profanity-filter::general.source')) {
 					case 'database':
-						$repository = new EloquentAbstractProfanityRepository();
+						$repository = new EloquentProfanityRepository();
 						break;
 					case 'config':
 					default:

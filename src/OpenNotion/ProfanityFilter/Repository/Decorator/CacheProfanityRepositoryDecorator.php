@@ -2,6 +2,7 @@
 
 namespace OpenNotion\ProfanityFilter\Repository\Decorator;
 
+use OpenNotion\ProfanityFilter\Repository\Profanity;
 use OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface;
 use OpenNotion\ProfanityFilter\Service\CacheServiceInterface;
 
@@ -91,5 +92,17 @@ class CacheProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
 		$profanities = $this->profanityRepository->getProfanities();
 
 		$this->cache->put($this->cacheKey, $profanities);
+	}
+
+	/**
+	 * Retrieve a single profanity by it's ID.
+	 *
+	 * @param int $id The ID of the profanity to fetch.
+	 *
+	 * @return Profanity
+	 */
+	public function getProfanity($id = 0)
+	{
+		return $this->profanityRepository->getProfanity($id);
 	}
 }
