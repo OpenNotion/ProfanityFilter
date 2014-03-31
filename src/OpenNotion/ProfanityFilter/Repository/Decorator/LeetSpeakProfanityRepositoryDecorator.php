@@ -108,4 +108,16 @@ class LeetSpeakProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
 	{
 		return $this->profanityRepository->getProfanity($id);
 	}
+
+	/**
+	 * Get a paginated list of profanity objects.
+	 *
+	 * @param int $perPage The number of profanities per page.
+	 *
+	 * @return \Illuminate\Pagination\Paginator A paginator instance.
+	 */
+	public function paginateProfanities($perPage = 10)
+	{
+		return $this->profanityRepository->paginateProfanities($perPage);
+	}
 }

@@ -17,6 +17,15 @@ interface ProfanityRepositoryInterface
 	public function getProfanities();
 
 	/**
+	 * Get a paginated list of profanity objects.
+	 *
+	 * @param int $perPage The number of profanities per page.
+	 *
+	 * @return \Illuminate\Pagination\Paginator A paginator instance.
+	 */
+	public function paginateProfanities($perPage = 10);
+
+	/**
 	 * Retrieve a single profanity by it's ID.
 	 *
 	 * @param int $id The ID of the profanity to fetch.

@@ -78,4 +78,16 @@ class ConfigurationProfanityRepository implements ProfanityRepositoryInterface
 	{
 		throw new \BadMethodCallException('The Configuration repository provider does not support the fetching of single profanities.');
 	}
+
+	/**
+	 * Get a paginated list of profanity objects.
+	 *
+	 * @param int $perPage The number of profanities per page.
+	 *
+	 * @return \Illuminate\Pagination\Paginator A paginator instance.
+	 */
+	public function paginateProfanities($perPage = 10)
+	{
+		// TODO: Implement paginateProfanities() method.
+	}
 }

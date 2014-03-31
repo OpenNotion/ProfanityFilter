@@ -77,4 +77,18 @@ class EloquentProfanityRepository implements ProfanityRepositoryInterface
 	{
 		return Profanity::findOrFail($id);
 	}
+
+	/**
+	 * Get a paginated list of profanity objects.
+	 *
+	 * @param int $perPage The number of profanities per page.
+	 *
+	 * @return \Illuminate\Pagination\Paginator
+	 */
+	public function paginateProfanities($perPage = 10)
+	{
+		$perPage = (int) (!empty($perPage) ? $perPage : 10);
+
+		return Profanity::paginate($perPage);
+	}
 }

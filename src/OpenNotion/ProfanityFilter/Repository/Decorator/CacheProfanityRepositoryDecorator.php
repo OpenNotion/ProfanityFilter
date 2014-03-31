@@ -66,7 +66,6 @@ class CacheProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
 	 */
 	public function create($profanity = '', $replacement = '')
 	{
-
 		$this->profanityRepository->create($profanity, $replacement);
 
 		$profanities = $this->profanityRepository->getProfanities();
@@ -104,5 +103,25 @@ class CacheProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
 	public function getProfanity($id = 0)
 	{
 		return $this->profanityRepository->getProfanity($id);
+	}
+
+	/**
+	 * Get a paginated list of profanity objects.
+	 *
+	 * @param int $perPage The number of profanities per page.
+	 *
+	 * @return \Illuminate\Pagination\Paginator A paginator instance.
+	 */
+	public function paginateProfanities($perPage = 10)
+	{
+		if ($this->cache->has($this->cacheKey . '.paginated')) {
+			return $this->cache->get($this->cacheKey . '.paginated');
+		}
+
+		$profanities = $this->profanityRepository->paginateProfanities();
+
+		$this->cache->put($this->cacheKey . '.paginated', $profanities);
+
+		return $profanities;
 	}
 }
