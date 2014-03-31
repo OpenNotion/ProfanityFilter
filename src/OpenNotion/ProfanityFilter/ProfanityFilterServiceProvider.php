@@ -42,12 +42,12 @@ class ProfanityFilterServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->app->bind(
-			'\OpenNotion\ProfanityFilter\Service\CacheServiceInterface',
-			'\OpenNotion\ProfanityFilter\Service\IlluminateCacheService'
+			'OpenNotion\ProfanityFilter\Service\CacheServiceInterface',
+			'OpenNotion\ProfanityFilter\Service\IlluminateCacheService'
 		);
 
-		$this->app->singleton(
-			'\OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface',
+		$this->app->bind(
+			'OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface',
 			function (Application $app) {
 				$repository = null;
 
@@ -76,7 +76,7 @@ class ProfanityFilterServiceProvider extends ServiceProvider
 					$cacheKey = (string) $config->get('profanity-filter::general.cache.key');
 
 					$repository = new CacheProfanityRepositoryDecorator($repository, $this->app->make(
-						'\OpenNotion\ProfanityFilter\Service\CacheServiceInterface'
+						'OpenNotion\ProfanityFilter\Service\CacheServiceInterface'
 					), $cacheKey);
 				}
 
@@ -87,7 +87,7 @@ class ProfanityFilterServiceProvider extends ServiceProvider
 		$this->app->bind(
 			'profanities',
 			function ($app) {
-				return new Filter($app->make('\OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface'));
+				return new Filter($app->make('OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface'));
 			}
 		);
 	}
