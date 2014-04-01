@@ -114,13 +114,7 @@ class CacheProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
 	 */
 	public function paginateProfanities($perPage = 10)
 	{
-		if ($this->cache->has($this->cacheKey . '.paginated')) {
-			return $this->cache->get($this->cacheKey . '.paginated');
-		}
-
 		$profanities = $this->profanityRepository->paginateProfanities();
-
-		$this->cache->put($this->cacheKey . '.paginated', $profanities);
 
 		return $profanities;
 	}

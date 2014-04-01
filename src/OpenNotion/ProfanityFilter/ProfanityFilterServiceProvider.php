@@ -99,6 +99,10 @@ class ProfanityFilterServiceProvider extends ServiceProvider
 	 */
 	public function provides()
 	{
-		return array('profanities');
+		return array(
+			'OpenNotion\ProfanityFilter\Service\CacheServiceInterface',
+			'OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface',
+			'profanities',
+		);
 	}
 }
