@@ -2,6 +2,9 @@
 
 namespace OpenNotion\ProfanityFilter\Repository;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use OpenNotion\ProfanityFilter\Model\Profanity;
+
 /**
  * Contract for a profanity repository that allows the retrieving of profanities.
  *
@@ -56,6 +59,7 @@ interface ProfanityRepositoryInterface
 	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
 	 *
 	 * @throws \BadMethodCallException Thrown if the repository type does not support this method.
+	 * @throws ModelNotFoundException Thrown if no profanity with the given ID is found.
 	 */
 	public function update($id = 0, $profanity = '', $replacement = '');
 } 

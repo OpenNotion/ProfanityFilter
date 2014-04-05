@@ -2,7 +2,7 @@
 
 namespace OpenNotion\ProfanityFilter\Repository\Decorator;
 
-use OpenNotion\ProfanityFilter\Repository\Profanity;
+use OpenNotion\ProfanityFilter\Model\Profanity;
 
 /**
  * ProfanityRepository Decorator that runs preg_quote on all profanities and prefixes them with preg_replace() delimiters.

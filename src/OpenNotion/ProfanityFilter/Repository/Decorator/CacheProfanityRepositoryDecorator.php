@@ -2,7 +2,7 @@
 
 namespace OpenNotion\ProfanityFilter\Repository\Decorator;
 
-use OpenNotion\ProfanityFilter\Repository\Profanity;
+use OpenNotion\ProfanityFilter\Model\Profanity;
 use OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface;
 use OpenNotion\ProfanityFilter\Service\CacheServiceInterface;
 

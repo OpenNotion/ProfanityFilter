@@ -50,18 +50,18 @@ class EloquentProfanityRepository implements ProfanityRepositoryInterface
 	 * @param string $replacement The replacement to use for the profanity.
 	 *
 	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
+	 *
+	 * @throws ModelNotFoundException Thrown if no profanity with the given ID is found.
 	 */
 	public function update($id = 0, $profanity = '', $replacement = '')
 	{
-		$profanity = Profanity::find((int) $id);
+		$profanityObject = $this->getProfanity($id);
 
-		if ($profanity) {
-			$profanity->profanity   = (string) $profanity;
-			$profanity->replacement = (string) $replacement;
-			$profanity->save();
-		}
+		$profanityObject->profanity   = (string) $profanity;
+		$profanityObject->replacement = (string) $replacement;
+		$profanityObject->save();
 
-		return $profanity;
+		return $profanityObject;
 	}
 
 	/**
