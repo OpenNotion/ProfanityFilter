@@ -2,6 +2,7 @@
 
 namespace OpenNotion\ProfanityFilter\Repository\Decorator;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use OpenNotion\ProfanityFilter\Model\Profanity;
 use OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface;
 
@@ -120,4 +121,19 @@ class LeetSpeakProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
 	{
 		return $this->profanityRepository->paginateProfanities($perPage);
 	}
+
+    /**
+     * Delete a profanity from the system.
+     *
+     * @param int $id The ID of the profanity to delete.
+     *
+     * @return bool Whether the profanity was deleted.
+     *
+     * @throws \BadMethodCallException Thrown if the repository type does not support this method.
+     * @throws ModelNotFoundException Thrown if no profanity with the given ID is found.
+     */
+    public function deleteProfanity($id = 0)
+    {
+        return $this->profanityRepository->deleteProfanity($id);
+    }
 }

@@ -91,4 +91,21 @@ class EloquentProfanityRepository implements ProfanityRepositoryInterface
 
 		return Profanity::paginate($perPage);
 	}
+
+    /**
+     * Delete a profanity from the system.
+     *
+     * @param int $id The ID of the profanity to delete.
+     *
+     * @return bool Whether the profanity was deleted.
+     *
+     * @throws \BadMethodCallException Thrown if the repository type does not support this method.
+     * @throws ModelNotFoundException Thrown if no profanity with the given ID is found.
+     */
+    public function deleteProfanity($id = 0)
+    {
+        $profanity = $this->getProfanity($id);
+
+        return (bool) $profanity->delete();
+    }
 }

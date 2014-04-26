@@ -3,6 +3,8 @@
 namespace OpenNotion\ProfanityFilter\Repository;
 
 use Illuminate\Config\Repository as Config;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use OpenNotion\ProfanityFilter\Model\Profanity;
 
 /**
  * An implementation of the ProfanityRepositoryInterface using a configuration file to fetch profanities.
@@ -85,9 +87,26 @@ class ConfigurationProfanityRepository implements ProfanityRepositoryInterface
 	 * @param int $perPage The number of profanities per page.
 	 *
 	 * @return \Illuminate\Pagination\Paginator A paginator instance.
+     *
+     * @throws \BadMethodCallException
 	 */
-	public function paginateProfanities($perPage = 10)
+    public function paginateProfanities($perPage = 10)
 	{
-		// TODO: Implement paginateProfanities() method.
+        throw new \BadMethodCallException('The Configuration repository provider does not support the pagination of profanities.');
 	}
+
+    /**
+     * Delete a profanity from the system.
+     *
+     * @param int $id The ID of the profanity to delete.
+     *
+     * @return bool Whether the profanity was deleted.
+     *
+     * @throws \BadMethodCallException Thrown if the repository type does not support this method.
+     * @throws ModelNotFoundException Thrown if no profanity with the given ID is found.
+     */
+    public function deleteProfanity($id = 0)
+    {
+        throw new \BadMethodCallException('The Configuration repository provider does not support the deletion of profanities.');
+    }
 }
