@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Facade;
  */
 class ProfanityFilterFacade extends Facade
 {
-	protected static function getFacadeAccessor()
-	{
-		return 'profanities';
-	}
+    protected static function getFacadeAccessor()
+    {
+        return 'profanities';
+    }
 } 

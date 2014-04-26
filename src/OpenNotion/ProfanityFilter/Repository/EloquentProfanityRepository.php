@@ -12,85 +12,85 @@ use OpenNotion\ProfanityFilter\Model\Profanity;
  */
 class EloquentProfanityRepository implements ProfanityRepositoryInterface
 {
-	/**
-	 * Retrieve all profanities in the form of an array listing profanity => replacement.
-	 *
-	 * @return array
-	 */
-	public function getProfanities()
-	{
-		return Profanity::lists('replacement', 'profanity');
-	}
+    /**
+     * Retrieve all profanities in the form of an array listing profanity => replacement.
+     *
+     * @return array
+     */
+    public function getProfanities()
+    {
+        return Profanity::lists('replacement', 'profanity');
+    }
 
-	/**
-	 * Create a new profanity.
-	 *
-	 * @param string $profanity   The profanity keyword to search for.
-	 * @param string $replacement The replacement to use for the profanity.
-	 *
-	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
-	 */
-	public function create($profanity = '', $replacement = '')
-	{
-		$profanity = Profanity::create(
-			array(
-				'profanity'   => (string) $profanity,
-				'replacement' => (string) $replacement,
-			)
-		);
+    /**
+     * Create a new profanity.
+     *
+     * @param string $profanity   The profanity keyword to search for.
+     * @param string $replacement The replacement to use for the profanity.
+     *
+     * @return mixed|null Object representing the profanity if the storage mechanism supports such.
+     */
+    public function create($profanity = '', $replacement = '')
+    {
+        $profanity = Profanity::create(
+            array(
+                'profanity'   => (string) $profanity,
+                'replacement' => (string) $replacement,
+            )
+        );
 
-		return $profanity;
-	}
+        return $profanity;
+    }
 
-	/**
-	 * Update an existing profanity.
-	 *
-	 * @param int    $id          The ID of the profanity to update.
-	 * @param string $profanity   The profanity keyword to search for.
-	 * @param string $replacement The replacement to use for the profanity.
-	 *
-	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
-	 *
-	 * @throws ModelNotFoundException Thrown if no profanity with the given ID is found.
-	 */
-	public function update($id = 0, $profanity = '', $replacement = '')
-	{
-		$profanityObject = $this->getProfanity($id);
+    /**
+     * Update an existing profanity.
+     *
+     * @param int    $id          The ID of the profanity to update.
+     * @param string $profanity   The profanity keyword to search for.
+     * @param string $replacement The replacement to use for the profanity.
+     *
+     * @return mixed|null Object representing the profanity if the storage mechanism supports such.
+     *
+     * @throws ModelNotFoundException Thrown if no profanity with the given ID is found.
+     */
+    public function update($id = 0, $profanity = '', $replacement = '')
+    {
+        $profanityObject = $this->getProfanity($id);
 
-		$profanityObject->profanity   = (string) $profanity;
-		$profanityObject->replacement = (string) $replacement;
-		$profanityObject->save();
+        $profanityObject->profanity   = (string) $profanity;
+        $profanityObject->replacement = (string) $replacement;
+        $profanityObject->save();
 
-		return $profanityObject;
-	}
+        return $profanityObject;
+    }
 
-	/**
-	 * Retrieve a single profanity by it's ID.
-	 *
-	 * @param int $id The ID of the profanity to fetch.
-	 *
-	 * @return Profanity The profanity that was found.
-	 *
-	 * @throws ModelNotFoundException Thrown if no profanity ith the given ID exists.
-	 */
-	public function getProfanity($id = 0)
-	{
-		return Profanity::findOrFail($id);
-	}
+    /**
+     * Retrieve a single profanity by it's ID.
+     *
+     * @param int $id The ID of the profanity to fetch.
+     *
+     * @return Profanity The profanity that was found.
+     *
+     * @throws ModelNotFoundException Thrown if no profanity ith the given ID exists.
+     */
+    public function getProfanity($id = 0)
+    {
+        return Profanity::findOrFail($id);
+    }
 
-	/**
-	 * Get a paginated list of profanity objects.
-	 *
-	 * @param int $perPage The number of profanities per page.
-	 *
-	 * @return \Illuminate\Pagination\Paginator
-	 */
-	public function paginateProfanities($perPage = 10)
-	{
-		$perPage = (int) (!empty($perPage) ? $perPage : 10);
+    /**
+     * Get a paginated list of profanity objects.
+     *
+     * @param int $perPage The number of profanities per page.
+     *
+     * @return \Illuminate\Pagination\Paginator
+     */
+    public function paginateProfanities($perPage = 10)
+    {
+        $perPage = (int) (!empty($perPage) ? $perPage : 10);
 
-		return Profanity::paginate($perPage);
-	}
+        return Profanity::paginate($perPage);
+    }
 
     /**
      * Delete a profanity from the system.

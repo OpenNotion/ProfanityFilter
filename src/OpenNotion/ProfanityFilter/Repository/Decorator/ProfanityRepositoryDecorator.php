@@ -10,11 +10,11 @@ use OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface;
  */
 abstract class ProfanityRepositoryDecorator implements ProfanityRepositoryInterface
 {
-	/** @var \OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface $profanityRepository */
-	protected $profanityRepository;
+    /** @var \OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface $profanityRepository */
+    protected $profanityRepository;
 
-	public function __construct(ProfanityRepositoryInterface $profanityRepository)
-	{
-		$this->profanityRepository = $profanityRepository;
-	}
+    public function __construct(ProfanityRepositoryInterface $profanityRepository)
+    {
+        $this->profanityRepository = $profanityRepository;
+    }
 } 

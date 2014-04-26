@@ -14,111 +14,107 @@ use OpenNotion\ProfanityFilter\Service\CacheServiceInterface;
  */
 class CacheProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
 {
-	/** @var \OpenNotion\ProfanityFilter\Service\CacheServiceInterface $cache */
-	protected $cache;
-	/** @var string $cacheKey */
-	protected $cacheKey;
+    /** @var \OpenNotion\ProfanityFilter\Service\CacheServiceInterface $cache */
+    protected $cache;
+    /** @var string $cacheKey */
+    protected $cacheKey;
 
-	/**
-	 * Create a new instance of the caching decorator.
-	 *
-	 * @param ProfanityRepositoryInterface $profanityRepository The repository to decorate.
-	 * @param CacheServiceInterface        $cache               A caching service instance.
-	 * @param string                       $cacheKey            The key to use to store profanities in.
-	 */
-	public function __construct(
-		ProfanityRepositoryInterface $profanityRepository,
-		CacheServiceInterface $cache,
-		$cacheKey = 'opennotion.profanities'
-	) {
-		parent::__construct($profanityRepository);
+    /**
+     * Create a new instance of the caching decorator.
+     *
+     * @param ProfanityRepositoryInterface $profanityRepository The repository to decorate.
+     * @param CacheServiceInterface        $cache               A caching service instance.
+     * @param string                       $cacheKey            The key to use to store profanities in.
+     */
+    public function __construct(
+        ProfanityRepositoryInterface $profanityRepository,
+        CacheServiceInterface $cache,
+        $cacheKey = 'opennotion.profanities'
+    ) {
+        parent::__construct($profanityRepository);
 
-		$this->cache    = $cache;
-		$this->cacheKey = $cacheKey;
-	}
+        $this->cache    = $cache;
+        $this->cacheKey = $cacheKey;
+    }
 
-	/**
-	 * Retrieve all profanities in the form of an array listing search word => replacement.
-	 *
-	 * @return array
-	 */
-	public function getProfanities()
-	{
-		if ($this->cache->has($this->cacheKey)) {
-			return $this->cache->get($this->cacheKey);
-		}
+    /**
+     * Retrieve all profanities in the form of an array listing search word => replacement.
+     *
+     * @return array
+     */
+    public function getProfanities()
+    {
+        if ($this->cache->has($this->cacheKey)) {
+            return $this->cache->get($this->cacheKey);
+        }
 
-		$profanities = $this->profanityRepository->getProfanities();
+        $profanities = $this->profanityRepository->getProfanities();
 
-		$this->cache->put($this->cacheKey, $profanities);
+        $this->cache->put($this->cacheKey, $profanities);
 
-		return $profanities;
-	}
+        return $profanities;
+    }
 
-	/**
-	 * Create a new profanity.
-	 *
-	 * @param string $profanity   The profanity keyword to search for.
-	 * @param string $replacement The replacement to use for the profanity.
-	 *
-	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
-	 *
-	 * @throws \BadMethodCallException Thrown if the repository type does not support this method.
-	 */
-	public function create($profanity = '', $replacement = '')
-	{
-		$this->profanityRepository->create($profanity, $replacement);
+    /**
+     * Create a new profanity.
+     *
+     * @param string $profanity   The profanity keyword to search for.
+     * @param string $replacement The replacement to use for the profanity.
+     *
+     * @return mixed|null Object representing the profanity if the storage mechanism supports such.
+     *
+     * @throws \BadMethodCallException Thrown if the repository type does not support this method.
+     */
+    public function create($profanity = '', $replacement = '')
+    {
+        $this->profanityRepository->create($profanity, $replacement);
 
-		$profanities = $this->profanityRepository->getProfanities();
+        $this->cache->delete($this->cacheKey);
+    }
 
-		$this->cache->put($this->cacheKey, $profanities);
-	}
+    /**
+     * Update an existing profanity.
+     *
+     * @param int    $id          The ID of the profanity to update.
+     * @param string $profanity   The profanity keyword to search for.
+     * @param string $replacement The replacement to sue for the profanity.
+     *
+     * @return mixed|null Object representing the profanity if the storage mechanism supports such.
+     *
+     * @throws \BadMethodCallException Thrown if the repository type does not support this method.
+     */
+    public function update($id = 0, $profanity = '', $replacement = '')
+    {
+        $this->profanityRepository->update($id, $profanity, $replacement);
 
-	/**
-	 * Update an existing profanity.
-	 *
-	 * @param int    $id          The ID of the profanity to update.
-	 * @param string $profanity   The profanity keyword to search for.
-	 * @param string $replacement The replacement to sue for the profanity.
-	 *
-	 * @return mixed|null Object representing the profanity if the storage mechanism supports such.
-	 *
-	 * @throws \BadMethodCallException Thrown if the repository type does not support this method.
-	 */
-	public function update($id = 0, $profanity = '', $replacement = '')
-	{
-		$this->profanityRepository->update($id, $profanity, $replacement);
+        $this->cache->delete($this->cacheKey);
+    }
 
-		$profanities = $this->profanityRepository->getProfanities();
+    /**
+     * Retrieve a single profanity by it's ID.
+     *
+     * @param int $id The ID of the profanity to fetch.
+     *
+     * @return Profanity
+     */
+    public function getProfanity($id = 0)
+    {
+        return $this->profanityRepository->getProfanity($id);
+    }
 
-		$this->cache->put($this->cacheKey, $profanities);
-	}
+    /**
+     * Get a paginated list of profanity objects.
+     *
+     * @param int $perPage The number of profanities per page.
+     *
+     * @return \Illuminate\Pagination\Paginator A paginator instance.
+     */
+    public function paginateProfanities($perPage = 10)
+    {
+        $profanities = $this->profanityRepository->paginateProfanities();
 
-	/**
-	 * Retrieve a single profanity by it's ID.
-	 *
-	 * @param int $id The ID of the profanity to fetch.
-	 *
-	 * @return Profanity
-	 */
-	public function getProfanity($id = 0)
-	{
-		return $this->profanityRepository->getProfanity($id);
-	}
-
-	/**
-	 * Get a paginated list of profanity objects.
-	 *
-	 * @param int $perPage The number of profanities per page.
-	 *
-	 * @return \Illuminate\Pagination\Paginator A paginator instance.
-	 */
-	public function paginateProfanities($perPage = 10)
-	{
-		$profanities = $this->profanityRepository->paginateProfanities();
-
-		return $profanities;
-	}
+        return $profanities;
+    }
 
     /**
      * Delete a profanity from the system.
@@ -135,9 +131,7 @@ class CacheProfanityRepositoryDecorator extends ProfanityRepositoryDecorator
         $success = $this->profanityRepository->deleteProfanity($id);
 
         if ($success) {
-            $profanities = $this->profanityRepository->getProfanities();
-
-            $this->cache->put($this->cacheKey, $profanities);
+            $this->cache->delete($this->cacheKey);
         }
 
         return $success;

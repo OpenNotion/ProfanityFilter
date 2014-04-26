@@ -17,92 +17,92 @@ use OpenNotion\ProfanityFilter\Repository\EloquentProfanityRepository;
  */
 class ProfanityFilterServiceProvider extends ServiceProvider
 {
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = false;
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = false;
 
-	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->package('opennotion/profanity-filter');
-	}
+    /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->package('opennotion/profanity-filter');
+    }
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		$this->app->bind(
-			'OpenNotion\ProfanityFilter\Service\CacheServiceInterface',
-			'OpenNotion\ProfanityFilter\Service\IlluminateCacheService'
-		);
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->bind(
+            'OpenNotion\ProfanityFilter\Service\CacheServiceInterface',
+            'OpenNotion\ProfanityFilter\Service\IlluminateCacheService'
+        );
 
-		$this->app->bind(
-			'OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface',
-			function (Application $app) {
-				$repository = null;
+        $this->app->bind(
+            'OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface',
+            function (Application $app) {
+                $repository = null;
 
-				/** @var \Illuminate\Config\Repository $config */
-				$config = $app->make('config');
+                /** @var \Illuminate\Config\Repository $config */
+                $config = $app->make('config');
 
-				switch ($config->get('profanity-filter::general.source')) {
-					case 'database':
-						$repository = new EloquentProfanityRepository();
-						break;
-					case 'config':
-					default:
-						$repository = new ConfigurationProfanityRepository($config);
-						break;
-				}
+                switch ($config->get('profanity-filter::general.source')) {
+                    case 'database':
+                        $repository = new EloquentProfanityRepository();
+                        break;
+                    case 'config':
+                    default:
+                        $repository = new ConfigurationProfanityRepository($config);
+                        break;
+                }
 
-				if ($config->get('profanity-filter::general.use_leet_speak_replacement')) {
-					$leetSpeakReplacements = (array) $config->get('profanity-filter::leet_speak');
+                if ($config->get('profanity-filter::general.use_leet_speak_replacement')) {
+                    $leetSpeakReplacements = (array) $config->get('profanity-filter::leet_speak');
 
-					$repository = new LeetSpeakProfanityRepositoryDecorator($repository, $leetSpeakReplacements);
-				} else {
-					$repository = new NoRegexProfanityRepositoryDecorator($repository);
-				}
+                    $repository = new LeetSpeakProfanityRepositoryDecorator($repository, $leetSpeakReplacements);
+                } else {
+                    $repository = new NoRegexProfanityRepositoryDecorator($repository);
+                }
 
-				if ($config->get('profanity-filter::general.cache.enabled') === true) {
-					$cacheKey = (string) $config->get('profanity-filter::general.cache.key');
+                if ($config->get('profanity-filter::general.cache.enabled') === true) {
+                    $cacheKey = (string) $config->get('profanity-filter::general.cache.key');
 
-					$repository = new CacheProfanityRepositoryDecorator($repository, $this->app->make(
-						'OpenNotion\ProfanityFilter\Service\CacheServiceInterface'
-					), $cacheKey);
-				}
+                    $repository = new CacheProfanityRepositoryDecorator($repository, $this->app->make(
+                        'OpenNotion\ProfanityFilter\Service\CacheServiceInterface'
+                    ), $cacheKey);
+                }
 
-				return $repository;
-			}
-		);
+                return $repository;
+            }
+        );
 
-		$this->app->bind(
-			'profanities',
-			function ($app) {
-				return new Filter($app->make('OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface'));
-			}
-		);
-	}
+        $this->app->bind(
+            'profanities',
+            function ($app) {
+                return new Filter($app->make('OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface'));
+            }
+        );
+    }
 
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return array(
-			'OpenNotion\ProfanityFilter\Service\CacheServiceInterface',
-			'OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface',
-			'profanities',
-		);
-	}
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return array(
+            'OpenNotion\ProfanityFilter\Service\CacheServiceInterface',
+            'OpenNotion\ProfanityFilter\Repository\ProfanityRepositoryInterface',
+            'profanities',
+        );
+    }
 }
