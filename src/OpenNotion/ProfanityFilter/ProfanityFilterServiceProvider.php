@@ -75,7 +75,7 @@ class ProfanityFilterServiceProvider extends ServiceProvider
                 if ($config->get('profanity-filter::general.cache.enabled') === true) {
                     $cacheKey = (string) $config->get('profanity-filter::general.cache.key');
 
-                    $repository = new CacheProfanityRepositoryDecorator($repository, $this->app->make(
+                    $repository = new CacheProfanityRepositoryDecorator($repository, $app->make(
                         'OpenNotion\ProfanityFilter\Service\CacheServiceInterface'
                     ), $cacheKey);
                 }
