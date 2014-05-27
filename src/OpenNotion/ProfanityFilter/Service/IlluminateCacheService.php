@@ -35,7 +35,7 @@ class IlluminateCacheService implements CacheServiceInterface
     {
         $key = (string) $key;
 
-        return $this->cache->has($key);
+        return (bool) $this->cache->has($key);
     }
 
     /**
